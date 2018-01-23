@@ -39,15 +39,8 @@ export default class Login extends Component {
             })
         })
         .then(this.handleErrors)
-        // .then( async (response) => {
-        //     try {
-        //         await AsyncStorage.setItem('@thumb:token', response.token);
-        //     } catch (error) {
-        //         // Error saving data
-        //         this.setState({ validationResponse: error.body });
-        //     }
-        // })
-        .then( response => AsyncStorage.setItem('@thumb:token', JSON.stringify(response.token)))
+        .then( response => response.json())
+        .then( response => AsyncStorage.setItem('thumb_token', JSON.stringify(response.token)))
         .catch(error => console.log(error))
         .then( () => this.props.navigation.navigate('LoginSuccess'))
         .catch( () => this.setState({ validationResponse: "Error: Cannot authenticate the user."}) )

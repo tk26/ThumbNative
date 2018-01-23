@@ -14,7 +14,7 @@ export default class LoginSuccess extends Component {
 
     async componentWillMount() {
         try {
-            const value = await AsyncStorage.getItem('@thumb:token');
+            const value = await AsyncStorage.getItem('thumb_token');
             if (value !== null){
                 // We have data!!
                 console.log(value);
