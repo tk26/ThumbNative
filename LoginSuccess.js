@@ -1,30 +1,11 @@
 import React, { Component } from 'react';
 import { AsyncStorage } from 'react-native';
-import { Container, Content, View, Text } from 'native-base';
-
-const initialState = {
-    token: ''
-};
+import { Container, Content, View, Text, Button } from 'native-base';
 
 export default class LoginSuccess extends Component {
-    constructor(props) {
-        super(props);
-        this.state = initialState;
-    }
-
-    async componentWillMount() {
-        try {
-            const value = await AsyncStorage.getItem('thumb_token');
-            if (value !== null){
-                // We have data!!
-                console.log(value);
-                this.setState({ token: value });
-            }
-        } catch (error) {
-            console.log(error);
-            // Error retrieving data
-            this.setState({ token: '_|_' });
-        }
+    logout() {
+        AsyncStorage.removeItem('thumb_token');
+        this.props.navigation.navigate('Signup');
     }
 
     render() {
@@ -34,11 +15,13 @@ export default class LoginSuccess extends Component {
                     <View>
                         <Text> 
                             User successfully authenticated.
-                            <Text>
-                                {this.state.token}
-                            </Text>
                         </Text>
                     </View>
+                    <Button rounded info style = { { alignSelf: 'center' } } onPress={() => this.logout()}>
+                            <Text>
+                                Logout
+                            </Text>
+                        </Button>
                 </Content>
             </Container>
         );
