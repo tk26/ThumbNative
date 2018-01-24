@@ -55,7 +55,7 @@ export default class ProfileProgress extends Component {
 
                         <ListItem>
                             <Left>
-                                <Text>
+                                <Text onPress={() => navigate('DescribeYourself')}>
                                     Describe yourself
                                 </Text>
                             </Left>

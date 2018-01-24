@@ -8,6 +8,7 @@ import SignupSuccess from './SignupSuccess';
 import Login from './Login';
 import LoginSuccess from './LoginSuccess';
 import ForgotPassword from './ForgotPassword';
+import DescribeYourself from './DescribeYourself';
 
 const RootNavigator = StackNavigator({
     Signup: {
@@ -56,6 +57,12 @@ const RootNavigator = StackNavigator({
       screen: ForgotPassword,
       navigationOptions: {
         headerTitle: 'Forgot password',
+      },
+    },
+    DescribeYourself: {
+      screen: DescribeYourself,
+      navigationOptions: {
+        headerTitle: 'Describe Yourself',
       },
     },
 });
