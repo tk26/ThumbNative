@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { AsyncStorage } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import Signup from './Signup';
 import ProfileProgress from './ProfileProgress';
@@ -9,6 +10,8 @@ import Login from './Login';
 import LoginSuccess from './LoginSuccess';
 import ForgotPassword from './ForgotPassword';
 import DescribeYourself from './DescribeYourself';
+
+import { Tabs } from './router';
 
 const RootNavigator = StackNavigator({
     Signup: {
@@ -70,7 +73,7 @@ const RootNavigator = StackNavigator({
 export default class App extends Component {
     render() {
         return (
-          <RootNavigator/>
+            <Tabs/>
         );
     }
 }

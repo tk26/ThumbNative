@@ -68,5 +68,15 @@
 		<string>Feather.ttf</string>
 		<string>MaterialCommunityIcons.ttf</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Upload a profile picture</string>
+	<!-- iOS 10 -->
+	<!-- Include this only if you are planning to use the camera roll -->
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Upload a profile picture from your photos</string>
+	<!-- iOS 11 -->
+	<!-- Include this only if you are planning to use the camera roll -->
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Upload a profile picture from your photos</string>
 </dict>
 </plist>
