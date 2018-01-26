@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, Linking } from 'react-native';
 import { Container, Header, Content, Form, Item, Input, Label, Button, Text, View } from 'native-base';
+
+import { onSignIn } from './auth';
 
 const initialState = {
     email: '', password: '', validationResponse: ''
@@ -41,9 +43,10 @@ export default class Login extends Component {
         .then(this.handleErrors)
         .then( response => response.json())
         .then( response => {
-            AsyncStorage.setItem('thumb_token', JSON.stringify(response.token));
             this.setState(initialState);
-            this.props.navigation.navigate('LoginSuccess');
+            onSignIn(JSON.stringify(response.token))
+                .then(() => this.props.navigation.navigate('SignedInTabs'));
+            
         })
         .catch( () => this.setState({ validationResponse: "Error: Cannot authenticate the user."}) )
     }
@@ -97,7 +100,7 @@ export default class Login extends Component {
                     <View>
                         <Text>
                             Cannot remember the password?&nbsp;
-                            <Text style={{color: 'blue'}} onPress={() => navigate('ForgotPassword')}>
+                            <Text style={{color: 'blue'}} onPress={() => Linking.openURL('https://thumb-webapp.herokuapp.com/#/forgot')}>
                                 Forgot
                             </Text>
                         </Text>

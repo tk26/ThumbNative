@@ -11,6 +11,24 @@ import AddProfilePicture from './AddProfilePicture';
 import AddPaymentMethod from './AddPaymentMethod';
 import DescribeYourself from './DescribeYourself';
 
+import Login from './Login';
+import Signup from './Signup';
+
+export const SignedOutStack = StackNavigator({
+    Login: {
+        screen: Login,
+        navigationOptions: {
+            title: 'Log in'
+        }
+    },
+    Signup: {
+        screen: Signup,
+        navigationOptions: {
+            title: 'Sign up'
+        }
+    },
+});
+
 export const ProfileProgressStack = StackNavigator({
     ProfileProgress: {
         screen: ProfileProgress,
@@ -53,7 +71,7 @@ export const ProfileStack = StackNavigator({
     }
 });
 
-export const Tabs = TabNavigator({
+export const SignedInTabs = TabNavigator({
     Home: {
         screen: Home,
         navigationOptions: {
@@ -69,3 +87,25 @@ export const Tabs = TabNavigator({
         }
     }
 });
+
+export const createRootNavigator = ( signedIn = false) => {
+    return StackNavigator({
+        SignedInTabs: {
+            screen: SignedInTabs,
+            navigationOptions: {
+                gesturesEnabled: false
+            }
+        },
+        SignedOutStack: {
+            screen: SignedOutStack,
+            navigationOptions: {
+                gesturesEnabled: false
+            }
+        }
+    },
+    {
+        headerMode: 'none',
+        mode: 'modal',
+        initialRouteName: signedIn ? 'SignedInTabs' : 'SignedOutStack'
+    });
+};

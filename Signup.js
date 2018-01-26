@@ -5,7 +5,7 @@ import { Container, Header, Content, Form, Item, Input, Label, Button, Text, Pic
 const initialState = { 
     firstName: '', lastName: '', email: '',
     school: 'none', password: '', confirmedPassword: '',
-    validationResponse: ''
+    validationResponse: '', isSuccessful: false
 };
 
 export default class Signup extends Component {
@@ -80,7 +80,9 @@ export default class Signup extends Component {
         .then(this.handleErrors)
         .then( () => {
             this.setState(initialState);
-            this.props.navigation.navigate('SignupSuccess');
+            this.setState({
+                isSuccessful: true
+            });
         })
         .catch( () => this.setState({ validationResponse: "Error: Cannot create an account."}) );
     }
@@ -95,96 +97,96 @@ export default class Signup extends Component {
     render() {
         const { navigate } = this.props.navigation;
         
-        return (
-            <Container>
-                <Content>
-                    <Form>
-                        <Item>
-                            <Input placeholder="First Name" maxLength={20} 
-                                onChangeText={(firstName) => this.setState({firstName})} 
-                                value={this.state.firstName}/>
-                        </Item>
-                        <Item>
-                            <Input placeholder="Last Name" maxLength={20} 
-                                onChangeText={(lastName) => this.setState({lastName})}
-                                value={this.state.lastName}/>
-                        </Item>
-                        <Item>
-                            <Input placeholder="Email (.edu)" maxLength={40} 
-                                onChangeText={(email) => this.setState({email})}
-                                value={this.state.email}/>
-                        </Item>
-                        <Picker
-                            iosHeader="School"
-                            mode="dropdown"
-                            selectedValue = { this.state.school }
-                            onValueChange = { this.onValueChange.bind(this) }
-                            >
-                            <Picker.Item label="Select School" value="none" />
-                            <Picker.Item label="Indiana University" value="iu" />
-                            <Picker.Item label="Purdue University" value="pu" />
-                            <Picker.Item label="Other" value="other" />
-                        </Picker>
-                        <Item>
-                            <Input placeholder="Password (min. 8 chars)" secureTextEntry = { true } maxLength={30}
-                                onChangeText={(password) => this.setState({password})}
-                                value={this.state.password}/>
-                        </Item>
-                        <Item>
-                            <Input placeholder="Confirm password" secureTextEntry = { true } maxLength={30}
-                                onChangeText={(confirmedPassword) => this.setState({confirmedPassword})}
-                                value={this.state.confirmedPassword}/>
-                        </Item>
-                        <Button rounded success style = { { alignSelf: 'center' } } onPress={() => this.validate()}>
+        if (this.state.isSuccessful) {
+            return (
+                <Container>
+                    <Content>
+                        <View>
+                            <Text> 
+                                Account successfully created. Please check your email and verify the account.
+                            </Text>
+                        </View>
+                    </Content>
+                </Container>
+            );
+        }
+        else {
+            return (
+                <Container>
+                    <Content>
+                        <Form>
+                            <Item>
+                                <Input placeholder="First Name" maxLength={20} 
+                                    onChangeText={(firstName) => this.setState({firstName})} 
+                                    value={this.state.firstName}/>
+                            </Item>
+                            <Item>
+                                <Input placeholder="Last Name" maxLength={20} 
+                                    onChangeText={(lastName) => this.setState({lastName})}
+                                    value={this.state.lastName}/>
+                            </Item>
+                            <Item>
+                                <Input placeholder="Email (.edu)" maxLength={40} 
+                                    onChangeText={(email) => this.setState({email})}
+                                    value={this.state.email}/>
+                            </Item>
+                            <Picker
+                                iosHeader="School"
+                                mode="dropdown"
+                                selectedValue = { this.state.school }
+                                onValueChange = { this.onValueChange.bind(this) }
+                                >
+                                <Picker.Item label="Select School" value="none" />
+                                <Picker.Item label="Indiana University" value="iu" />
+                                <Picker.Item label="Purdue University" value="pu" />
+                                <Picker.Item label="Other" value="other" />
+                            </Picker>
+                            <Item>
+                                <Input placeholder="Password (min. 8 chars)" secureTextEntry = { true } maxLength={30}
+                                    onChangeText={(password) => this.setState({password})}
+                                    value={this.state.password}/>
+                            </Item>
+                            <Item>
+                                <Input placeholder="Confirm password" secureTextEntry = { true } maxLength={30}
+                                    onChangeText={(confirmedPassword) => this.setState({confirmedPassword})}
+                                    value={this.state.confirmedPassword}/>
+                            </Item>
+                            <Button rounded success style = { { alignSelf: 'center' } } onPress={() => this.validate()}>
+                                <Text>
+                                    Signup
+                                </Text>
+                            </Button>
+                        </Form>
+                        
+                        <View style = { { alignSelf: 'center' } }> 
                             <Text>
-                                Signup
+                                {this.state.validationResponse}
                             </Text>
-                        </Button>
-                    </Form>
-                    
-                    <View style = { { alignSelf: 'center' } }> 
-                        <Text>
-                            {this.state.validationResponse}
-                        </Text>
-                    </View>
+                        </View>
 
-                    <View>
-                        <Text>
-                            Clicking Signup indicates you agree to&nbsp;
-                            <Text style={{color: 'blue'}}
-                                onPress={() => Linking.openURL('http://google.com')}>
-                                terms and conditions
-                            </Text>
-                        </Text>
-                    </View>
-                    
-                    <View>
-                        <Text>
-                            Have an account already?&nbsp;
-                            <Text style={{color: 'blue'}} onPress={() => navigate('Login')}>
-                                Login
-                            </Text>
-                        </Text>
-                    </View>
-                    
-                    <View>
-                        <Text>
-                            See&nbsp;
-                            <Text style={{color: 'blue'}}
-                                onPress={() => Linking.openURL('http://google.com')}>
-                                helpful information
-                            </Text>
-                            &nbsp;about using thumb
-                        </Text>
-                    </View>
-
-                    <Button rounded success style = { { alignSelf: 'center' } } onPress={() => navigate('ProfileProgress')}>
+                        <View>
                             <Text>
-                                Profile Progress
+                                Clicking Signup indicates you agree to&nbsp;
+                                <Text style={{color: 'blue'}}
+                                    onPress={() => Linking.openURL('http://google.com')}>
+                                    terms and conditions
+                                </Text>
                             </Text>
-                        </Button>
-                </Content>
-            </Container>
-        );
+                        </View>
+                        
+                        <View>
+                            <Text>
+                                See&nbsp;
+                                <Text style={{color: 'blue'}}
+                                    onPress={() => Linking.openURL('http://google.com')}>
+                                    helpful information
+                                </Text>
+                                &nbsp;about using thumb
+                            </Text>
+                        </View>
+                    </Content>
+                </Container>
+            );
+        }
     }
 }
