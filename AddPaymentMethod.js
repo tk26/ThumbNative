@@ -7,7 +7,8 @@ const initialState = {
     isValid: false,
     values: { },
     stripeToken: '',
-    customerId: ''
+    validationResponse: '',
+    isSuccessful: false
 };
 
 var stripe_url = 'https://api.stripe.com/v1/';
@@ -26,7 +27,36 @@ export default class AddPaymentMethod extends Component {
         })
     }
 
+    handleErrors(response) {
+        if (!response.ok) {
+            throw Error(response.statusText);
+        }
+        return response;
+    }
+
+    savePaymentInformation() {
+        fetch('https://vast-everglades-88283.herokuapp.com/user/payment/save', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "token" : global.auth_token,
+                "stripeToken" : this.state.stripeToken
+            })
+        })
+        .then(this.handleErrors)
+        .then( () => {
+            this.setState(initialState);
+            this.setState({
+                isSuccessful: true
+            });
+        })
+        .catch( () => this.setState({ validationResponse: "Error: Cannot save the payment information."}) )
+    }
+
     saveCard() {
+        // get the card details
         var cardDetails = {
             "card[number]": this.state.values.number,
             "card[exp_month]": this.state.values.expiry.substring(0,2),
@@ -42,6 +72,7 @@ export default class AddPaymentMethod extends Component {
         }
         formBody = formBody.join("&");
 
+        // get stripeToken
         fetch(stripe_url + 'tokens', {
             method: 'post',
             headers: {
@@ -57,67 +88,48 @@ export default class AddPaymentMethod extends Component {
             });
         })
         .then( () => {
-            var customerDetails = {
-                "email": "tejakumt@indiana.edu", //TODO take from profile
-                "source": this.state.stripeToken
-            };
-
-            var formBody2 = [];
-            for (var property in customerDetails) {
-                var encodedKey = encodeURIComponent(property);
-                var encodedValue = encodeURIComponent(customerDetails[property]);
-                formBody2.push(encodedKey + "=" + encodedValue);
-            }
-            formBody2 = formBody2.join("&");
-
-            fetch(stripe_url + 'customers', {
-                method: 'post',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'Authorization': 'Bearer ' + 'sk_test_G0A5SoF2Du8KVR0MPDzE4hRO'
-                },
-                body: formBody2
-            }).then( response => response.json())
-            .then( customer => {
-                this.setState({
-                    customerId: customer.id
-                });
-            })
-            .catch( error => console.log(error) );
+            this.savePaymentInformation();
         })
         .catch( error => console.log(error) );
     }
 
     render() {
         const { navigate } = this.props.navigation;
+        if (this.state.isSuccessful) {
+            return (
+                <Container>
+                    <Content>
+                        <View>
+                            <Text> 
+                                Payment information successfully saved.
+                            </Text>
+                        </View>
+                    </Content>
+                </Container>
+            );
+        }
+        else {
+            return (
+                <Container>
+                    <Content style = { { padding: 20 } }>
+                        <CreditCardInput onChange={this._onChange.bind(this)} requiresCVC/>
+                        <Button rounded success disabled={!this.state.isValid}
+                            style = { { alignSelf: 'center' } }
+                            onPress = { () => this.saveCard() }
+                        >
+                            <Text>
+                                Save
+                            </Text>
+                        </Button>
 
-        return (
-            <Container>
-                <Content style = { { padding: 20 } }>
-                    <CreditCardInput onChange={this._onChange.bind(this)} requiresCVC/>
-                    <Button rounded success disabled={!this.state.isValid}
-                        style = { { alignSelf: 'center' } }
-                        onPress = { () => this.saveCard() }
-                    >
-                        <Text>
-                            Save
-                        </Text>
-                    </Button>
-
-                    <View>
-                        <Text>
-                            {this.state.stripeToken}
-                        </Text>
-                    </View>
-
-                    <View>
-                        <Text>
-                            {this.state.customerId}
-                        </Text>
-                    </View>
-                </Content>
-            </Container>
-        );
+                        <View style = { { alignSelf: 'center' } }> 
+                            <Text>
+                                {this.state.validationResponse}
+                            </Text>
+                        </View>
+                    </Content>
+                </Container>
+            );
+        }
     }
 }

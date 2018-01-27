@@ -11,6 +11,7 @@ export const isSignedIn = () => {
         AsyncStorage.getItem(AUTH_TOKEN)
         .then(res => {
             if (res !== null) {
+                global.auth_token = JSON.parse(res);
                 resolve(true);
             } else {
                 resolve(false);
