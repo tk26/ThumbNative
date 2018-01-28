@@ -45,7 +45,10 @@ export default class Login extends Component {
         .then( response => {
             this.setState(initialState);
             onSignIn(JSON.stringify(response.token))
-                .then(() => this.props.navigation.navigate('SignedInTabs'));
+                .then(() => {
+                    global.auth_token = response.token //hack to make it work in first login run
+                    this.props.navigation.navigate('SignedInTabs')
+                });
             
         })
         .catch( () => this.setState({ validationResponse: "Error: Cannot authenticate the user."}) )
