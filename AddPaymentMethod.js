@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Config from 'react-native-config';
 import { Container, Header, Content, Card, CardItem, Text, Body, Button, View } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { CreditCardInput } from 'react-native-credit-card-input';
@@ -35,7 +36,7 @@ export default class AddPaymentMethod extends Component {
     }
 
     savePaymentInformation() {
-        fetch('https://vast-everglades-88283.herokuapp.com/user/payment/save', {
+        fetch(Config.API_URL+'/user/payment/save', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

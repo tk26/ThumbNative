@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, Linking } from 'react-native';
+import Config from 'react-native-config';
 import { Container, Header, Content, Form, Item, Input, Label, Button, Text, Picker, View } from 'native-base';
 
 const initialState = { 
@@ -47,7 +48,7 @@ export default class Signup extends Component {
     }
 
     savePotentialUser() {
-        fetch('https://vast-everglades-88283.herokuapp.com/user/potential/create', {
+        fetch(Config.API_URL+'/user/potential/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -64,7 +65,7 @@ export default class Signup extends Component {
     }
 
     saveUser() {
-        fetch('https://vast-everglades-88283.herokuapp.com/user/create', {
+        fetch(Config.API_URL+'/user/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { AsyncStorage, Linking } from 'react-native';
+import Config from 'react-native-config';
 import { Container, Header, Content, Form, Item, Input, Label, Button, Text, View } from 'native-base';
 
 import { onSignIn } from './auth';
@@ -30,7 +31,7 @@ export default class Login extends Component {
     }
 
     authenticateUser() {
-        fetch('https://vast-everglades-88283.herokuapp.com/user/login', {
+        fetch(Config.API_URL+'/user/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
