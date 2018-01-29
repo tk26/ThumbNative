@@ -4,7 +4,7 @@ import { Container, Content, View, Text, Button } from 'native-base';
 import { onSignOut } from './auth';
 
 export default class Profile extends Component {
-   render() {
+    render() {
         return (
             <Container>
                 <Content>
