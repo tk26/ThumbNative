@@ -49,6 +49,9 @@ export default class Login extends Component {
                 .then(() => {
                     global.auth_token = response.token; //hack to make it work in first login run
                     AsyncStorage.setItem("user_public_id", JSON.stringify(response.userPublicId));
+                    AsyncStorage.setItem("hasPaymentInformation", JSON.stringify(response.hasPaymentInformation));
+                    AsyncStorage.setItem("hasProfilePicture", JSON.stringify(response.hasProfilePicture));
+                    AsyncStorage.setItem("hasBio", JSON.stringify(response.hasBio));
                     this.props.navigation.navigate('SignedInTabs');
                 });
         })

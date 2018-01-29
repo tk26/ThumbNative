@@ -1,9 +1,49 @@
 import React, { Component } from 'react';
-import { Image, Dimensions } from 'react-native';
-import { Container, Content, List, ListItem, Left, Right, Text } from 'native-base';
+import { Image, Dimensions, AsyncStorage } from 'react-native';
+import { Container, Content, List, ListItem, Left, Right, Text, View } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+const initialState = {
+    hasPaymentInformation: false,
+    hasProfilePicture: false,
+    hasBio: false
+}
+
 export default class ProfileProgress extends Component {
+    constructor(props) {
+        super(props);
+        this.state = initialState;
+    }
+
+    componentWillMount() {
+        AsyncStorage.getItem("hasPaymentInformation")
+            .then(res => {
+                if(res !== null) {
+                    this.setState({
+                        hasPaymentInformation: res === "true" ? true : false
+                    });
+                }
+            });
+
+        AsyncStorage.getItem("hasProfilePicture")
+            .then(res => {
+                if(res !== null) {
+                    this.setState({
+                        hasProfilePicture: res  === "true" ? true : false
+                    });
+                }
+            });
+
+        AsyncStorage.getItem("hasBio")
+            .then(res => {
+                if(res !== null) {
+                    this.setState({
+                        hasBio: res === "true" ? true : false
+                    });
+                }
+            });
+    }
+
     render() {
         const { navigate } = this.props.navigation;
 
@@ -38,7 +78,9 @@ export default class ProfileProgress extends Component {
                                 </Text>
                             </Left>
                             <Right>
-                                <Icon name="picture-o" size={18}/>
+                                { this.state.hasProfilePicture ?
+                                    <Icon name="check-circle" size={18}/>
+                                    : <Icon name="picture-o" size={18}/> }
                             </Right>
                         </ListItem>
 
@@ -49,7 +91,9 @@ export default class ProfileProgress extends Component {
                                 </Text>
                             </Left>
                             <Right>
-                                <Icon name="credit-card" size={18}/>
+                                { this.state.hasPaymentInformation ?
+                                    <Icon name="check-circle" size={18}/>
+                                    : <Icon name="credit-card" size={18}/> }
                             </Right>
                         </ListItem>
 
@@ -60,7 +104,9 @@ export default class ProfileProgress extends Component {
                                 </Text>
                             </Left>
                             <Right>
-                                <Icon name="pencil-square-o" size={18}/>
+                                { this.state.hasBio ?
+                                    <Icon name="check-circle" size={18}/>
+                                    : <Icon name="pencil-square-o" size={18}/> }
                             </Right>
                         </ListItem>
 
