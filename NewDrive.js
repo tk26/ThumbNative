@@ -8,11 +8,11 @@ import moment from 'moment';
 
 const initialState = { 
     from_location: '', to_location: '', travel_date: '',
-    travel_time: 'none', comment: '',
+    travel_time: 'none', comment: '', seats_available: 0,
     validationResponse: '', isSuccessful: false
 };
 
-export default class NewRide extends Component {
+export default class NewDrive extends Component {
     constructor(props) {
         super(props);
         this.state = initialState;
@@ -24,12 +24,19 @@ export default class NewRide extends Component {
         });
     }
 
+    onValueChange2(value) {
+        this.setState({
+            seats_available: value
+        });
+    }
+
     validate() {
         this.setState({ validationResponse: "" })
         if(!this.state.from_location
             || !this.state.to_location
             || !this.state.travel_date
             || this.state.travel_time === 'none'
+            || this.state.seats_available === 0
             ) 
             {   
                 this.setState({ validationResponse: "Error: One or more invalid fields."} );
@@ -40,7 +47,7 @@ export default class NewRide extends Component {
     }
 
     submitRide() {
-        fetch(Config.API_URL+'/ride/submit', {
+        fetch(Config.API_URL+'/drive/submit', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -51,6 +58,7 @@ export default class NewRide extends Component {
                 "to_location" : this.state.to_location,
                 "travel_date" : this.state.travel_date,
                 "travel_time": [ this.state.travel_time ],
+                "seats_available": this.state.seats_available,
                 "comment": this.state.comment
             })
         })
@@ -80,7 +88,7 @@ export default class NewRide extends Component {
                     <Content>
                         <View>
                             <Text> 
-                                New Ride successfully submitted.
+                                Drive successfully posted.
                             </Text>
                         </View>
                     </Content>
@@ -200,6 +208,20 @@ export default class NewRide extends Component {
                             <Picker.Item label="Noon" value="noon" />
                             <Picker.Item label="Evening" value="evening" />
                             <Picker.Item label="Night" value="night" />
+                        </Picker>
+
+                        <Picker
+                            iosHeader="Seats Available"
+                            mode="dropdown"
+                            selectedValue = { this.state.seats_available }
+                            onValueChange = { this.onValueChange2.bind(this) }
+                            >
+                            <Picker.Item label="Number of seats" value={0} />
+                            <Picker.Item label="1" value={1} />
+                            <Picker.Item label="2" value={2} />
+                            <Picker.Item label="3" value={3} />
+                            <Picker.Item label="4" value={4} />
+                            <Picker.Item label="5" value={5} />
                         </Picker>
 
                         <Text> Comments (if any) </Text>

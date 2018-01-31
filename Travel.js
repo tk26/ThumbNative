@@ -12,6 +12,12 @@ export default class Travel extends Component {
                         </Text>
                     </Button>
 
+                    <Button rounded success style = { { alignSelf: 'center', padding: 30 } } onPress={() => this.props.navigation.navigate('NewDrive')}>
+                        <Text>
+                            Post a drive
+                        </Text>
+                    </Button>
+
                     <Button rounded info style = { { alignSelf: 'center', padding: 30 } } onPress={() => this.props.navigation.navigate('MyTravels')}
                         >
                         <Text>

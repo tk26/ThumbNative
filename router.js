@@ -16,6 +16,7 @@ import Signup from './Signup';
 
 import Travel from './Travel';
 import NewRide from './NewRide';
+import NewDrive from './NewDrive';
 import MyTravels from './MyTravels';
 
 export const SignedOutStack = StackNavigator({
@@ -86,6 +87,12 @@ export const TravelStack = StackNavigator({
         screen: NewRide,
         navigationOptions: {
             title: 'Submit ride request',
+        }
+    },
+    NewDrive: {
+        screen: NewDrive,
+        navigationOptions: {
+            title: 'Post a drive',
         }
     },
     MyTravels: {
