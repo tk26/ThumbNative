@@ -14,6 +14,10 @@ import DescribeYourself from './DescribeYourself';
 import Login from './Login';
 import Signup from './Signup';
 
+import Travel from './Travel';
+import NewRide from './NewRide';
+import MyTravels from './MyTravels';
+
 export const SignedOutStack = StackNavigator({
     Login: {
         screen: Login,
@@ -71,12 +75,40 @@ export const ProfileStack = StackNavigator({
     }
 });
 
+export const TravelStack = StackNavigator({
+    Travel: {
+        screen: Travel,
+        navigationOptions: {
+            title: 'Travel',
+        }
+    },
+    NewRide: {
+        screen: NewRide,
+        navigationOptions: {
+            title: 'Submit ride request',
+        }
+    },
+    MyTravels: {
+        screen: MyTravels,
+        navigationOptions: {
+            title: 'My travels',
+        }
+    }
+});
+
 export const SignedInTabs = TabNavigator({
     Home: {
         screen: Home,
         navigationOptions: {
             tabBarLabel: 'Home',
             tabBarIcon: ({ tintColor }) => <Icon name="home" size={35} color={tintColor}/>
+        }
+    },
+    Travel: {
+        screen: TravelStack,
+        navigationOptions: {
+            tabBarLabel: 'Travel',
+            tabBarIcon: ({ tintColor }) => <Icon name="car" size={35} color={tintColor}/>
         }
     },
     Profile: {
