@@ -6,7 +6,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 const initialState = {
     hasPaymentInformation: false,
     hasProfilePicture: false,
-    hasBio: false
+    hasBio: false,
+    phone: ''
 }
 
 export default class ProfileProgress extends Component {
@@ -39,6 +40,15 @@ export default class ProfileProgress extends Component {
                 if(res !== null) {
                     this.setState({
                         hasBio: res === "true" ? true : false
+                    });
+                }
+            });
+        
+        AsyncStorage.getItem("phone")
+            .then(res => {
+                if(res !== null) {
+                    this.setState({
+                        phone: JSON.parse(res)
                     });
                 }
             });
@@ -107,6 +117,19 @@ export default class ProfileProgress extends Component {
                                 { this.state.hasBio ?
                                     <Icon name="check-circle" size={18}/>
                                     : <Icon name="pencil-square-o" size={18}/> }
+                            </Right>
+                        </ListItem>
+
+                        <ListItem>
+                            <Left>
+                                <Text onPress={() => navigate('ContactInformation')}>
+                                    Contact Information
+                                </Text>
+                            </Left>
+                            <Right>
+                                { this.state.phone ? 
+                                    <Icon name="check-circle" size={18}/>
+                                    : <Icon name="phone-square" size={18}/> }
                             </Right>
                         </ListItem>
 

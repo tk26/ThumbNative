@@ -10,6 +10,7 @@ import ProfileProgress from './ProfileProgress';
 import AddProfilePicture from './AddProfilePicture';
 import AddPaymentMethod from './AddPaymentMethod';
 import DescribeYourself from './DescribeYourself';
+import ContactInformation from './ContactInformation';
 
 import Login from './Login';
 import Signup from './Signup';
@@ -60,6 +61,12 @@ export const ProfileProgressStack = StackNavigator({
             title: 'Describe Yourself',
         },
     },
+    ContactInformation: {
+        screen: ContactInformation,
+        navigationOptions: {
+            title: 'Contact Information'
+        }
+    }
 }, {
     headerMode: 'none'
 });
