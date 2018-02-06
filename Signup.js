@@ -6,7 +6,7 @@ import { Container, Header, Content, Form, Item, Input, Label, Button, Text, Pic
 const initialState = { 
     firstName: '', lastName: '', email: '',
     school: 'none', password: '', confirmedPassword: '',
-    validationResponse: '', isSuccessful: false
+    username:'', validationResponse: '', isSuccessful: false
 };
 
 export default class Signup extends Component {
@@ -30,6 +30,7 @@ export default class Signup extends Component {
             || this.state.school === 'none'
             || this.state.password.length < 8
             || this.state.password !== this.state.confirmedPassword
+            || this.state.username.length < 3
             || !reg.test(this.state.email.toLowerCase())
             // || this.state.email.substr(this.state.email.length-4) !== '.edu'
             ) 
@@ -75,7 +76,8 @@ export default class Signup extends Component {
                 "lastName" : this.state.lastName,
                 "email" : this.state.email.toLowerCase(),
                 "school" : this.state.school,
-                "password" : this.state.password
+                "password" : this.state.password,
+                "username": this.state.username.toLowerCase()
             })
         })
         .then(this.handleErrors)
@@ -85,7 +87,7 @@ export default class Signup extends Component {
                 isSuccessful: true
             });
         })
-        .catch( () => this.setState({ validationResponse: "Error: Cannot create an account."}) );
+        .catch( () => this.setState({ validationResponse: "Error: Cannot create an account. Username or Email Address could be taken." }) );
     }
 
     handleErrors(response) {
@@ -151,6 +153,11 @@ export default class Signup extends Component {
                                 <Input placeholder="Confirm password" secureTextEntry = { true } maxLength={30}
                                     onChangeText={(confirmedPassword) => this.setState({confirmedPassword})}
                                     value={this.state.confirmedPassword}/>
+                            </Item>
+                            <Item>
+                                <Input placeholder="Username (min. 3 chars)" maxLength={20} 
+                                    onChangeText={(username) => this.setState({username})}
+                                    value={this.state.username}/>
                             </Item>
                             <Button rounded success style = { { alignSelf: 'center' } } onPress={() => this.validate()}>
                                 <Text>
