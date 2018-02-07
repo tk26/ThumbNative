@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSContactsUsageDescription</key>
+	<string>View contacts from your phonebook</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -39,7 +41,7 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSExceptionDomains</key>
@@ -70,12 +72,8 @@
 	</array>
 	<key>NSCameraUsageDescription</key>
 	<string>Upload a profile picture</string>
-	<!-- iOS 10 -->
-	<!-- Include this only if you are planning to use the camera roll -->
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Upload a profile picture from your photos</string>
-	<!-- iOS 11 -->
-	<!-- Include this only if you are planning to use the camera roll -->
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Upload a profile picture from your photos</string>
 </dict>
