@@ -51,7 +51,7 @@ export default class Login extends Component {
                     AsyncStorage.setItem("user_public_id", JSON.stringify(response.userPublicId));
                     AsyncStorage.setItem("hasPaymentInformation", JSON.stringify(response.hasPaymentInformation));
                     AsyncStorage.setItem("hasProfilePicture", JSON.stringify(response.hasProfilePicture));
-                    AsyncStorage.setItem("hasBio", JSON.stringify(response.hasBio));
+                    AsyncStorage.setItem("bio", JSON.stringify(response.bio));
                     AsyncStorage.setItem("phone", JSON.stringify(response.phone));
                     this.props.navigation.navigate('SignedInTabs');
                 });

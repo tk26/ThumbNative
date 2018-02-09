@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 const initialState = {
     hasPaymentInformation: false,
     hasProfilePicture: false,
-    hasBio: false,
+    bio: '',
     phone: ''
 }
 
@@ -35,11 +35,11 @@ export default class ProfileProgress extends Component {
                 }
             });
 
-        AsyncStorage.getItem("hasBio")
+        AsyncStorage.getItem("bio")
             .then(res => {
                 if(res !== null) {
                     this.setState({
-                        hasBio: res === "true" ? true : false
+                        bio: JSON.parse(res)
                     });
                 }
             });
@@ -114,7 +114,7 @@ export default class ProfileProgress extends Component {
                                 </Text>
                             </Left>
                             <Right>
-                                { this.state.hasBio ?
+                                { this.state.bio ?
                                     <Icon name="check-circle" size={18}/>
                                     : <Icon name="pencil-square-o" size={18}/> }
                             </Right>
