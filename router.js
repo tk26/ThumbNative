@@ -12,6 +12,8 @@ import AddPaymentMethod from './AddPaymentMethod';
 import DescribeYourself from './DescribeYourself';
 import ContactInformation from './ContactInformation';
 
+import InviteUsers from './InviteUsers';
+
 import Login from './Login';
 import Signup from './Signup';
 
@@ -71,6 +73,17 @@ export const ProfileProgressStack = StackNavigator({
     headerMode: 'none'
 });
 
+export const InviteUsersStack = StackNavigator({
+    InviteUsers: {
+        screen: InviteUsers,
+        navigationOptions: {
+            title: 'Invite Users',
+        }
+    }
+}, {
+    headerMode: 'none'
+})
+
 export const ProfileStack = StackNavigator({
     Profile: {
         screen: Profile,
@@ -80,6 +93,9 @@ export const ProfileStack = StackNavigator({
     },
     ProfileProgress: {
         screen: ProfileProgressStack
+    },
+    InviteUsers: {
+        screen: InviteUsersStack
     }
 });
 
