@@ -1,40 +1,100 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
-import { Container, Header, Content, Card, CardItem, Text, Body, Button, View } from 'native-base';
+import { StyleSheet, Image } from 'react-native';
+import Config from 'react-native-config';
+import { Container, Header, Content, Text, Body, Button, View } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import PhotoUpload from 'react-native-photo-upload';
+
+const initialState = {
+    avatar: '',
+    validationResponse: '',
+    isSuccessful: false,
+};
 
 export default class AddProfilePicture extends Component {
+    constructor(props) {
+        super(props);
+        this.state = initialState;
+    }
+
+    handleErrors(response) {
+        if (!response.ok) {
+            throw Error(response.statusText);
+        }
+        return response;
+    }
+
+    uploadProfilePicture(avatar) {
+        fetch(Config.API_URL+'/user/pic', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "token" : global.auth_token,
+                "profile_picture" : avatar
+            })
+        })
+        .then(this.handleErrors)
+        .then( () => {
+            this.setState(initialState);
+            this.setState({
+                isSuccessful: true
+            });
+        })
+        .catch( () => this.setState({ validationResponse: "Error: Cannot save the user profile picture."}) )
+    }
+
     render() {
-        return (
-            <Container>
-                <Content style = { { padding: 20 } }>
-                    <Card style = { { padding: 20 } }>
-                        
-                        <CardItem header style = { { alignSelf: 'center' } }>
-                            <Icon name="user" size={100} />
-                        </CardItem>
-                        
-                        <CardItem>
-                            <Body>
-                                <Text style = { { textAlign: 'center' } }>
-                                    This helps your fellow riders and drivers recognize
-                                    you when you meet. Make sure your photo clearly shows
-                                    your face and doesn't include any personal or sensitive
-                                    info you'd rather not have others see.
-                                </Text>
-                            </Body>
-                        </CardItem>
-                        
-                        <CardItem footer style = { { alignSelf: 'center' } }>
-                            <Button bordered dark>
-                                <Text>
-                                    Upload Photo
-                                </Text>
-                            </Button>
-                        </CardItem>
-                    </Card>
-                </Content>
-            </Container>
-        );
+        if (this.state.isSuccessful) {
+            return (
+                <Container>
+                    <Content>
+                        <View>
+                            <Text> 
+                                Profile picture successfully saved.
+                            </Text>
+                        </View>
+                    </Content>
+                </Container>
+            );
+        }
+        else {
+            return (
+                <Container>
+                    <Content style = { { padding: 20 } }>
+                        <PhotoUpload
+                            onPhotoSelect={ _avatar => {
+                                if (_avatar) {
+                                    this.setState({
+                                        avatar: _avatar
+                                    });
+                                    this.uploadProfilePicture(_avatar);
+                                }
+                            }}
+                            >
+                            <Image
+                                style={{
+                                    paddingVertical: 30,
+                                    width: 150,
+                                    height: 150,
+                                    borderRadius: 75
+                                }}
+                                resizeMode='cover'
+                                source={{
+                                    uri: 'https://www.sparklabs.com/forum/styles/comboot/theme/images/default_avatar.jpg'
+                                }}
+                            />
+                        </PhotoUpload>
+
+                        <View style = { { alignSelf: 'center' } }> 
+                            <Text>
+                                {this.state.validationResponse}
+                            </Text>
+                        </View>
+                    </Content>
+                </Container>
+            );
+        }
     }
 }
