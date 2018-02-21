@@ -23,27 +23,48 @@ export default class Signup extends Component {
 
     validate() {
         this.setState({ validationResponse: "" })
+        let errors = [];
+        
+        if(!this.state.firstName) {
+            errors.push("First Name should be present");
+        }
+
+        if(!this.state.lastName) {
+            errors.push("Last Name should be present");
+        }
+
+        if(this.state.school === 'none') {
+            errors.push("Please select your school");
+        }
+
+        if(this.state.username.length < 3) {
+            errors.push("Username should be between 3 to 20 characters");
+        }
+
+        if(this.state.password.length < 8) {
+            errors.push("Password should be between 8 to 30 characters");
+        }
+            
+        if(this.state.password !== this.state.confirmedPassword) {
+            errors.push("Password and confirm password should match");
+        }
+
         var reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ ;
-        if(!this.state.firstName
-            || !this.state.lastName
-            || !this.state.email
-            || this.state.school === 'none'
-            || this.state.password.length < 8
-            || this.state.password !== this.state.confirmedPassword
-            || this.state.username.length < 3
-            || !reg.test(this.state.email.toLowerCase())
-            // || this.state.email.substr(this.state.email.length-4) !== '.edu'
-            ) 
-            {   
-                this.setState({ validationResponse: "Error: One or more invalid fields."} );
-            }
-        else {
-            if(this.state.email.substr(this.state.email.length-4) === '.edu') {
+        if(!reg.test(this.state.email.toLowerCase())) {
+            errors.push("Incorrect email address");
+        }
+
+        this.setState({
+            validationResponse: errors.toString().split(',').join('\n')
+        })
+
+        if(errors.length === 0) {
+            if(this.state.email.substr(this.state.email.length - 4) === '.edu') {
                 this.saveUser();
             }
             else {
                 this.savePotentialUser();
-                this.setState({ validationResponse: "Please use .edu email address to create an account."});
+                this.setState({ validationResponse: "Please use your .edu email address to register"});
             }
         }
     }
@@ -57,7 +78,7 @@ export default class Signup extends Component {
             body: JSON.stringify({
                 "firstName" : this.state.firstName,
                 "lastName" : this.state.lastName,
-                "email" : this.state.email,
+                "email" : this.state.email.toLowerCase(),
                 "school" : this.state.school
             })
         })
@@ -87,7 +108,7 @@ export default class Signup extends Component {
                 isSuccessful: true
             });
         })
-        .catch( () => this.setState({ validationResponse: "Error: Cannot create an account. Username or Email Address could be taken." }) );
+        .catch( () => this.setState({ validationResponse: "Error: Cannot create an account. Please try again. Could be a duplicate Username or Email Address." }) );
     }
 
     handleErrors(response) {
@@ -129,7 +150,7 @@ export default class Signup extends Component {
                                     value={this.state.lastName}/>
                             </Item>
                             <Item>
-                                <Input placeholder="Email (.edu)" maxLength={40} 
+                                <Input placeholder="Email (.edu)" maxLength={30} 
                                     onChangeText={(email) => this.setState({email})}
                                     value={this.state.email}/>
                             </Item>
@@ -140,8 +161,8 @@ export default class Signup extends Component {
                                 onValueChange = { this.onValueChange.bind(this) }
                                 >
                                 <Picker.Item label="Select School" value="none" />
-                                <Picker.Item label="Indiana University" value="iu" />
-                                <Picker.Item label="Purdue University" value="pu" />
+                                <Picker.Item label="Indiana University" value="indiana-university" />
+                                <Picker.Item label="Purdue University" value="purdue-university" />
                                 <Picker.Item label="Other" value="other" />
                             </Picker>
                             <Item>
@@ -155,7 +176,7 @@ export default class Signup extends Component {
                                     value={this.state.confirmedPassword}/>
                             </Item>
                             <Item>
-                                <Input placeholder="Username (min. 3 chars)" maxLength={20} 
+                                <Input placeholder="Username (min. 3 chars)" maxLength={20}
                                     onChangeText={(username) => this.setState({username})}
                                     value={this.state.username}/>
                             </Item>
